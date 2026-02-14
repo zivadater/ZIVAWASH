@@ -79,9 +79,24 @@ if(lotteryBtn){
   }
 }
 
+
 if(logoutBtn){
   logoutBtn.onclick = async () => {
     await supabase.auth.signOut();
     window.location.href = 'index.html';
   }
 }
+// ====== سبد خرید ======
+const cart = [];
+const cartButtons = document.querySelectorAll('.product button');
+
+cartButtons.forEach((btn) => {
+  btn.onclick = () => {
+    const productDiv = btn.parentElement;
+    const productName = productDiv.querySelector('h3').innerText;
+    const productPrice = productDiv.querySelector('p:nth-of-type(2)').innerText;
+    cart.push({ name: productName, price: productPrice });
+    alert(`${productName} به سبد خرید اضافه شد! تعداد محصولات: ${cart.length}`);
+    console.log('سبد خرید:', cart);
+  }
+});
