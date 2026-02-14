@@ -1,6 +1,6 @@
-// ====== جایگزین کن با لینک خودت ======
-const SUPABASE_URL = 'https://YOUR-SUPABASE-URL.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR-ANON-KEY';
+// ====== تنظیمات Supabase ======
+const SUPABASE_URL = 'vbmjsttfmznthcynuhcy'; // هم URL پروژه هم کلید anon
+const SUPABASE_ANON_KEY = 'vbmjsttfmznthcynuhcy';
 const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ====== ورود / ثبت‌نام ======
@@ -11,7 +11,10 @@ const loginBtn = document.getElementById('login');
 
 if(signupBtn){
   signupBtn.onclick = async () => {
-    const { error } = await supabase.auth.signUp({ email: emailInput.value, password: passInput.value });
+    const { error } = await supabase.auth.signUp({
+      email: emailInput.value,
+      password: passInput.value
+    });
     if(error) alert(error.message);
     else alert('ثبت‌نام موفق! حالا وارد شوید.');
   }
@@ -19,13 +22,16 @@ if(signupBtn){
 
 if(loginBtn){
   loginBtn.onclick = async () => {
-    const { error } = await supabase.auth.signInWithPassword({ email: emailInput.value, password: passInput.value });
+    const { error } = await supabase.auth.signInWithPassword({
+      email: emailInput.value,
+      password: passInput.value
+    });
     if(error) alert(error.message);
     else window.location.href = 'dashboard.html';
   }
 }
 
-// ====== داشبورد ======
+// ====== داشبورد و قرعه‌کشی ======
 const welcome = document.getElementById('welcome');
 const lotteryBtn = document.getElementById('lottery');
 const resultP = document.getElementById('result');
@@ -38,15 +44,38 @@ if(welcome){
   });
 }
 
+// تابع قرعه‌کشی با درصد شانس واقعی
+function getPrize() {
+  const prizes = [
+    { name: 'جایزه ویژه', chance: 10 },
+    { name: 'جایزه ۱', chance: 30 },
+    { name: 'جایزه ۲', chance: 40 },
+    { name: 'هیچ جایزه‌ای', chance: 20 }
+  ];
+
+  const rand = Math.random() * 100;
+  let sum = 0;
+  for(let prize of prizes){
+    sum += prize.chance;
+    if(rand < sum) return prize.name;
+  }
+  return 'هیچ جایزه‌ای';
+}
+
+// اجرای قرعه‌کشی و ذخیره در جدول
 if(lotteryBtn){
   lotteryBtn.onclick = async () => {
-    const prizes = ['جایزه ۱', 'جایزه ۲', 'جایزه ۳', 'هیچ جایزه‌ای'];
-    const prize = prizes[Math.floor(Math.random() * prizes.length)];
+    const prize = getPrize();
     resultP.innerText = `نتیجه قرعه‌کشی: ${prize}`;
-    
-    // ذخیره در Supabase
-    const { error } = await supabase.from('lottery_results').insert([{ email: supabase.auth.getUser().data.user.email, prize }]);
-    if(error) console.log(error);
+
+    const { data: { user } } = await supabase.auth.getUser();
+    const userEmail = user.email;
+
+    const { error } = await supabase.from('lottery_results').insert([
+      { email: userEmail, prize }
+    ]);
+
+    if(error) console.log('خطا در ثبت قرعه‌کشی:', error);
   }
 }
 
@@ -55,4 +84,4 @@ if(logoutBtn){
     await supabase.auth.signOut();
     window.location.href = 'index.html';
   }
-      }
+}
