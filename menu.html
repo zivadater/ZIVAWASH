@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>منوی کرکره‌ای آماده</title>
+<style>
+/* نوار بالا */
+body {
+    margin: 0;
+    font-family: sans-serif;
+    padding-top: 50px; /* فاصله از navbar */
+}
+
+.navbar {
+    background-color: #333;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+}
+
+/* دکمه منو */
+.menu-btn {
+    font-size: 20px;
+    color: white;
+    background: none;
+    border: none;
+    padding: 14px 16px;
+    cursor: pointer;
+}
+
+/* لیست کرکره‌ای */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 160px;
+    top: 50px;
+    left: 0;
+    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    transition: max-height 0.3s ease, opacity 0.3s ease;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    border-radius: 0 0 4px 4px;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* نمایش منو با افکت */
+.dropdown-content.active {
+    display: block;
+    max-height: 500px; /* ارتفاع کافی برای گزینه‌ها */
+    opacity: 1;
+}
+
+/* محتوای صفحه */
+.content {
+    padding: 20px;
+}
+
+/* واکنش‌گرا برای موبایل */
+@media (max-width: 600px) {
+    .dropdown-content {
+        width: 100%;
+        left: 0;
+    }
+}
+</style>
+</head>
+<body>
+
+<!-- منوی کرکره‌ای -->
+<div class="navbar">
+    <button class="menu-btn" onclick="toggleMenu()">☰ منو</button>
+    <div class="dropdown-content" id="dropdown">
+        <a href="#">گزینه ۱</a>
+        <a href="#">گزینه ۲</a>
+        <a href="#">گزینه ۳</a>
+        <a href="#">گزینه ۴</a>
+    </div>
+</div>
+
+<!-- محتوای صفحه -->
+<div class="content">
+    <h2>صفحه تست منوی موبایل</h2>
+    <p>روی دکمه منو بالا سمت چپ کلیک کن تا منو باز و بسته شود. این نسخه واکنش‌گرا است و روی موبایل هم درست کار می‌کند.</p>
+</div>
+
+<!-- JS منو -->
+<script>
+function toggleMenu() {
+    const menu = document.getElementById('dropdown');
+    menu.classList.toggle('active');
+}
+
+// بستن منو هنگام کلیک بیرون
+window.onclick = function(e) {
+    const menu = document.getElementById('dropdown');
+    const btn = document.querySelector('.menu-btn');
+    if (!menu.contains(e.target) && !btn.contains(e.target)) {
+        menu.classList.remove('active');
+    }
+}
+</script>
+
+</body>
+  </html>
