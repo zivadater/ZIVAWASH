@@ -1,5 +1,5 @@
 // ====== تنظیمات Supabase ======
-const SUPABASE_URL = 'vbmjsttfmznthcynuhcy'; // هم URL پروژه هم کلید anon
+const SUPABASE_URL = 'vbmjsttfmznthcynuhcy';
 const SUPABASE_ANON_KEY = 'vbmjsttfmznthcynuhcy';
 const supabase = Supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -79,13 +79,13 @@ if(lotteryBtn){
   }
 }
 
-
 if(logoutBtn){
   logoutBtn.onclick = async () => {
     await supabase.auth.signOut();
     window.location.href = 'index.html';
   }
 }
+
 // ====== سبد خرید ======
 const cart = [];
 const cartButtons = document.querySelectorAll('.product button');
